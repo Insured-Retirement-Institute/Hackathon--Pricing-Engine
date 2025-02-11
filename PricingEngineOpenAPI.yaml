@@ -1,0 +1,128 @@
+openapi: 3.0.3
+info:
+  title: Pricing Engine API
+  description: An API to calculate pricing rates for investment funds based on input allocation and contract duration.
+  version: 1.0.0
+servers:
+  - url: https://api.example.com/v1
+paths:
+  /pricing:
+    post:
+      summary: Get pricing details based on asset allocation and contract duration
+      description: This endpoint returns the pricing details including the fund information, surrender schedule, and premium limits based on the input allocations and contract duration.
+      operationId: getPricingDetails
+      requestBody:
+        description: The request body containing the allocations and contract details.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                RequestorName:
+                  type: string
+                  description: Name of the person requesting the pricing.
+                ContractDuration:
+                  type: string
+                  description: Duration of the contract (e.g., "5 years").
+                Allocations:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      AssetClass:
+                        type: string
+                        description: The asset class, e.g., Stock, Bond, MutualFund.
+                        enum:
+                          - Stock
+                          - Bond
+                          - MutualFund
+                      AssetId:
+                        type: string
+                        description: The asset identifier, e.g., "TSLA" for Tesla or "TMUBMUSD01Y" for a 1-year treasury bill.
+                      AllocationPercentage:
+                        type: string
+                        description: The percentage of the total allocation for the given asset class (e.g., "10").
+                    required:
+                      - AssetClass
+                      - AssetId
+                      - AllocationPercentage
+              required:
+                - RequestorName
+                - ContractDuration
+                - Allocations
+      responses:
+        '200':
+          description: Pricing details successfully retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Hash:
+                    type: string
+                    description: One side hash used to validate the rates on the submitted application.
+                  ValidUntilDate:
+                    type: string
+                    format: date
+                    description: The date until which the pricing is valid.
+                  Funds:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        FundName:
+                          type: string
+                          description: The name of the fund.
+                        CAP:
+                          type: number
+                          format: float
+                          description: The cap rate for the fund.
+                        ParticipationRate:
+                          type: number
+                          format: float
+                          description: The participation rate for the fund.
+                    description: List of available funds and their details.
+                  SurrenderSchedule:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        Duration:
+                          type: integer
+                          description: The duration in years.
+                        SurrenderPercentage:
+                          type: number
+                          format: float
+                          description: The surrender percentage for the given duration.
+                    description: Surrender schedule for the policy.
+                  MinimumIssueAge:
+                    type: integer
+                    description: The minimum issue age for the policy.
+                  MaximumIssueAge:
+                    type: integer
+                    description: The maximum issue age for the policy.
+                  PremiumLimits:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        FromAge:
+                          type: integer
+                          description: The starting age for the premium limit.
+                        ThroughAge:
+                          type: integer
+                          description: The ending age for the premium limit.
+                        MinimumPremium:
+                          type: number
+                          format: float
+                          description: The minimum premium amount for the given age range.
+                        MaximumPremium:
+                          type: number
+                          format: float
+                          description: The maximum premium amount for the given age range.
+                    description: Premium limits based on age.
+        '400':
+          description: Invalid request body or input values.
+        '500':
+          description: Internal server error.
