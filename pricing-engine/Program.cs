@@ -1,3 +1,5 @@
+using index_pricing_services._Configuration;
+
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 var config = builder.Configuration;
