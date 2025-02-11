@@ -22,9 +22,6 @@ paths:
                 RequestorName:
                   type: string
                   description: Name of the person requesting the pricing.
-                ContractDuration:
-                  type: string
-                  description: Duration of the contract (e.g., "5 years").
                 Allocations:
                   type: array
                   items:
@@ -41,7 +38,7 @@ paths:
                         type: string
                         description: The asset identifier, e.g., "TSLA" for Tesla or "TMUBMUSD01Y" for a 1-year treasury bill.
                       AllocationPercentage:
-                        type: string
+                        type: number
                         description: The percentage of the total allocation for the given asset class (e.g., "10").
                     required:
                       - AssetClass
@@ -49,7 +46,6 @@ paths:
                       - AllocationPercentage
               required:
                 - RequestorName
-                - ContractDuration
                 - Allocations
       responses:
         '200':
@@ -74,54 +70,16 @@ paths:
                         FundName:
                           type: string
                           description: The name of the fund.
-                        CAP:
+                        Rate:
                           type: number
                           format: float
                           description: The cap rate for the fund.
-                        ParticipationRate:
-                          type: number
-                          format: float
-                          description: The participation rate for the fund.
+                        RateType:
+                          type: string
+                          enum:
+                          - "CAP"
+                          - "Participation"
                     description: List of available funds and their details.
-                  SurrenderSchedule:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        Duration:
-                          type: integer
-                          description: The duration in years.
-                        SurrenderPercentage:
-                          type: number
-                          format: float
-                          description: The surrender percentage for the given duration.
-                    description: Surrender schedule for the policy.
-                  MinimumIssueAge:
-                    type: integer
-                    description: The minimum issue age for the policy.
-                  MaximumIssueAge:
-                    type: integer
-                    description: The maximum issue age for the policy.
-                  PremiumLimits:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        FromAge:
-                          type: integer
-                          description: The starting age for the premium limit.
-                        ThroughAge:
-                          type: integer
-                          description: The ending age for the premium limit.
-                        MinimumPremium:
-                          type: number
-                          format: float
-                          description: The minimum premium amount for the given age range.
-                        MaximumPremium:
-                          type: number
-                          format: float
-                          description: The maximum premium amount for the given age range.
-                    description: Premium limits based on age.
         '400':
           description: Invalid request body or input values.
         '500':
