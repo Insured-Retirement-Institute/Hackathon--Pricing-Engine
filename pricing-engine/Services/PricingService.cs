@@ -15,17 +15,25 @@ public class PricingService : IPricingService
 
         var today = DateTime.UtcNow;
         var expiration = today.AddDays(2);
-
-        //return fake model
         var response = new PricingResponse()
         {
-            ValidUntilDate = expiration,
-            MinimumIssueAge = 25,
-            MaximumIssueAge = 80,
-            SurrenderSchedule = [ ],
-            PremiumLimits = [ ],
-            Funds = [ ]
+            ValidUntilDate = expiration
         };
+
+        var capFund = new PricingResponse.FundModel
+        {
+            FundName = $"{request.RequestorName} CAP Fund",
+            Rate = 2.5F
+        };
+
+        var parFund = new PricingResponse.FundModel
+        {
+            FundName = $"{request.RequestorName} PAR Fund",
+            Rate = 0.8F
+        };
+
+        response.Funds.Add(capFund);
+        response.Funds.Add(parFund);
 
         return Task.FromResult(response);
     }

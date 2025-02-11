@@ -10,7 +10,7 @@ public class PricingRequest
     [Required]
     public int ContractDuration { get; set; }
 
-    [Required]
+    [RequireOneItem]
     public List<AllocationModel> Allocations { get; set; }
 
     public class AllocationModel
@@ -24,7 +24,7 @@ public class PricingRequest
 
         [Required]
         [Range(0, 100)]
-        public string AllocationPercentage { get; set; }
+        public int AllocationPercentage { get; set; }
 
         public enum AssetClassType
         {
