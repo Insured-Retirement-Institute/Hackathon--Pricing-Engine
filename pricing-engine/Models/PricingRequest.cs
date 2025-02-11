@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using index_pricing_services.Services;
+using System.ComponentModel.DataAnnotations;
 
 namespace index_engine.Models;
 
@@ -11,6 +12,8 @@ public class PricingRequest
     public int ContractDuration { get; set; }
 
     [RequireOneItem]
+    [AllocationsMustTotal100]
+    [AllocationsMustBeUnique]
     public List<AllocationModel> Allocations { get; set; }
 
     public class AllocationModel
