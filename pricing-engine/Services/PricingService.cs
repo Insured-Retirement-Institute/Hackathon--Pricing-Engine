@@ -23,13 +23,13 @@ public class PricingService : IPricingService
         var capFund = new PricingResponse.FundModel
         {
             FundName = $"{request.RequestorName} CAP Fund",
-            Rate = 2.5F
+            Rate = 4F
         };
 
         var parFund = new PricingResponse.FundModel
         {
             FundName = $"{request.RequestorName} PAR Fund",
-            Rate = 0.8F
+            Rate = 80F
         };
 
         response.Funds.Add(capFund);

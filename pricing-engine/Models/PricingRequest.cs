@@ -25,6 +25,8 @@ public class PricingRequest
         [Required]
         public string AssetId { get; set; }
 
+        public string? AssetDisplayName { get; set; }
+
         [Required]
         [Range(0, 100)]
         public int AllocationPercentage { get; set; }
